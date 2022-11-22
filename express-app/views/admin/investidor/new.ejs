@@ -1,0 +1,158 @@
+<%- include ("../../partials/header.ejs") %> <%- include
+("../../partials/navbar.ejs") %>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+              <h2>Novo Investidor</h2>
+            </div>
+            <div class="card-body">
+              <form method="POST" action="/investidor/save">
+                  <div class="input--with-addon currency-input">
+                <label>Nome </label>
+                <div class="input__container text-input">
+                <input
+                  class="form-control"
+                  type="text"
+                  name="name"
+                  placeholder=""
+                  required />
+                  </div>
+                  </div>
+                <br />
+                <div class="input--with-addon currency-input">
+                  <label>Telefone</label>
+                  <div class="input__container numeral-input">
+                    <input
+                      type="phone"
+                      name="phone"
+                      placeholder="+55"
+                      required
+                      class="input form-control form-control-danger"
+                    /><!---->
+                  </div>
+                  <!----><!---->
+                </div>
+                <br>
+                <div class="input--with-addon currency-input">
+                    <label>E-mail</label>
+                    <div class="input__container text-input">
+                      <input
+
+                        type="text"
+                        name="email"
+                        placeholder=""
+                        required
+                        class="input form-control form-control-danger"
+                      /><!---->
+                    </div>
+                    <!----><!---->
+                  </div>
+                <br />
+                <div class="input--with-addon currency-input">
+                    <label>CPF / CNPJ</label>
+                    <div class="input__container text-input">
+                      <input
+
+                        type="text"
+                        name="cpf"
+                        placeholder=""
+                        required
+                        class="input form-control form-control-danger"
+                      /><!---->
+                    </div>
+                    <!----><!---->
+                  </div>
+                <br />
+                <div class="input--with-addon currency-input">
+                    <label>Cep</label>
+                    <div class="input__container number-input">
+                      <input
+
+                        type="text"
+                        name="cep"
+                        placeholder=""
+                        required
+                        class="input form-control form-control-danger"
+                      /><!---->
+                    </div>
+                    <!----><!---->
+                  </div>
+                <br />
+                <div class="input--with-addon currency-input">
+                    <label>Logradouro</label>
+                    <div class="input__container text-input">
+                      <input
+
+                        type="text"
+                        name="logradouro"
+                        placeholder=""
+                        required
+                        class="input form-control form-control-danger"
+                      /><!---->
+                    </div>
+                    <!----><!---->
+                  </div>
+                  <br>
+                  <div class="input--with-addon currency-input">
+                    <label>UF</label>
+                    <div class="input__container text-input">
+                      <input
+
+                        type="text"
+                        name="uf"
+                        placeholder=""
+                        required
+                        class="input form-control form-control-danger"
+                      /><!---->
+                    </div>
+                    <!----><!---->
+                  </div>
+                <br />
+                <div class="input--with-addon currency-input">
+                    <label>Cidade</label>
+                    <div class="input__container text-input">
+                      <input
+
+                        type="text"
+                        name="cidade"
+                        placeholder=""
+                        required
+                        class="input form-control form-control-danger"
+                      /><!---->
+                    </div>
+                    <!----><!---->
+                  </div>
+                <br />
+                <div class="input--with-addon currency-input">
+                    <label>Número</label>
+                    <div class="input__container number-input">
+                      <input
+
+                        type="number"
+                        name="number"
+                        placeholder=""
+                        required
+                        class="input form-control form-control-danger"
+                      /><!---->
+                    </div>
+                    <!----><!---->
+                  </div>
+                <br />
+                <label>Observações</label>
+                <textarea
+                  class="form-control"
+                  name="obs"
+                  required
+                ></textarea
+                ><br />
+                <button class="btn btn-success">Salvar</button>
+              </form>
+            </div>
+          </div>
+      </div>
+      </body>
+
+
+<%- include ("../../partials/footer.ejs") %>

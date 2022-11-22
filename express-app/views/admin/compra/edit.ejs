@@ -1,0 +1,114 @@
+<%- include ("../../partials/header.ejs") %> <%- include
+("../../partials/navbar.ejs") %>
+
+<body>
+    <div class="container">
+    
+        <div class="card-header">
+      <h2>Atualizar Compra</h2>
+    </div>
+      <hr />
+      <div class="card-body">
+        <form method="POST" action="/compra/update">
+            <div class="input--with-addon currency-input">
+          <label>Nome</label>
+           <input type="hidden" value="<%= compra.id %>" name="id" />
+          <input
+          class="form-control"
+          type="text"
+          name="investidoreId"
+            value="<%= compra.investidoreId %>"
+            required/>
+          </div>
+          <br />
+
+          <div class="input--with-addon currency-input">
+          <label>Data Compra</label>
+          <input
+            class="form-control"
+            type="date"
+            name="data"
+            value="<%= compra.data %>"
+            required
+          />
+          </div><br />
+
+          <div class="input--with-addon currency-input">
+            <label>Quantidade</label>
+            <div class="input__container numeral-input">
+              <input
+                required="required"
+                type="text"
+                name="quantidade"
+                value="<%= compra.quantidade %>"
+                class="input form-control form-control-danger"
+              /><!---->
+            </div>
+            <!----><!---->
+          </div>
+          <br />
+          <div class="input--with-addon currency-input">
+            <label>Valor Unitário</label>
+            <div class="input__container numeral-input">
+              <input
+                required="required"
+                type="text"
+                name="valor_unitario"
+                value="<%= compra.valor_unitario %>"
+                class="input form-control form-control-danger"
+              /><!---->
+            </div>
+            <!----><!---->
+          </div>
+          <br />
+          <div class="input--with-addon currency-input">
+            <label>Valor Compra</label>
+            <div class="input__container numeral-input">
+              <input
+                required="required"
+                type="text"
+                name="valor_compra"
+                value="<%= compra.valor_compra %>"
+                class="input form-control form-control-danger"
+              /><!---->
+            </div>
+            <!----><!---->
+          </div>
+          <br />
+          <div class="input--with-addon currency-input">
+            <label>Dolar</label>
+            <div class="input__container numeral-input">
+              <input
+                required="required"
+                type="text"
+                name="dolar"
+                value="<%= compra.dolar %>"
+                class="input form-control form-control-danger"
+              /><!---->
+            </div>
+            <!----><!---->
+          </div>
+          <br />
+          <div class="input--with-addon currency-input">
+            <label>Compra - Dolar</label>
+            <div class="input__container numeral-input">
+              <input
+                required="required"
+                type="text"
+                name="compra_dolar"
+                value="<%= compra.compra_dolar %>"
+                class="input form-control form-control-danger"
+              /><!---->
+            </div>
+            <!----><!---->
+          </div>
+          <br />
+          <button class="btn btn-success">Atualizar</button>
+        </form>
+      </div>
+
+      </div>
+      </body>
+
+
+<%- include ("../../partials/footer.ejs") %>

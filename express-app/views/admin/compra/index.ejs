@@ -1,0 +1,62 @@
+<%- include ("../../partials/header.ejs") %> <%- include
+("../../partials/navbar.ejs") %>
+
+<body>
+    <div class="container">
+      <hr />
+      <h2>Compras</h2>
+  
+      <hr />
+      <a class="btn btn-primary" href="/admin/compra/new"
+      >Nova Compra</a
+    >
+    <hr />
+
+    <table id="tab" data-type="table-menu" class="table table-bordered">
+      <thead>
+        <tr id="table-header">
+          <th>Nome</th>
+          <th>Data Compra</th>
+          <th>Quantidade</th>
+          <th>Valor Unitário</th>
+          <th>Valor Compra</th>
+          <th>Dolar</th>
+          <th>Compra - Dolar</th>
+        </tr>
+      </thead>
+      <tbody id="demo">
+        <% compras.forEach(compra => { %>
+        <tr href="/<%= compra.slug %>">
+          <td><%= compra.data %></td>
+          <td><%= compra.data %></td>
+          <td><%= compra.quantidade %></td>
+          <td><%= compra.valor_unitario %></td>
+          <td><%= compra.valor_compra %></td>
+          <td><%= compra.dolar %></td>
+          <td><%= compra.compra_dolar %></td>
+          <td>
+            <a
+              href="/admin/compra/edit/<%= compra.id %>"
+              class="btn btn-warning"
+              >Editar</a
+            >
+            <form
+              method="POST"
+              action="/compra/delete"
+              style="display: inline;"
+              onsubmit="confirmarDelecao(event, this)"
+            >
+              <input type="hidden" name="id" value="<%= compra.id %>" />
+              <button class="btn btn-danger">Deletar</button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+      </div>
+      </body>
+
+
+<%- include ("../../partials/footer.ejs") %>
