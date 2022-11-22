@@ -8,6 +8,7 @@ const {
 } = require("sequelize");
 
 
+var app = express();
 
 router.get('/admin/investidor', (req, res, next) => {
 
@@ -61,7 +62,6 @@ router.post('/investidor/save', (req, res, next) => {
     res.redirect("/admin/investidor");
   });
 });
-
 
 router.get("/admin/investidor/edit/:id", (req, res) => {
   var id = req.params.id;
@@ -139,5 +139,21 @@ router.post('/investidor/delete', (req, res) => {
     res.redirect("/admin/investidor");
   }
 });
+
+app.get('/compra/:slug', (req, res) => {
+  var slug = req.params.slug;
+  Compra.findOne({
+    where:{
+      slug:slug,
+    },
+  }).then((compra) => {
+      Investidor.findAll().then((investidores) => {
+    res.render("compra",{
+      compra,
+      investidores,
+    })
+  })
+  })
+})
 
 module.exports = router;

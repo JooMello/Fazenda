@@ -13,9 +13,9 @@
                 <label>Nome </label>
                 <div class="input__container text-input">
                   
-                  <select name="investidor" class="form-control">
-                    <% investidores.forEach((investidor) => { %>
-                      <option value="<%= investidor.id %>"><%= investidor.name %></option>
+                  <select name="investidores" class="form-control">
+                    <% investidores.forEach((investidores) => { %>
+                      <option value="<%= investidores.id %>"><%= investidores.name %></option>
                       <% }) %>
                   </select>
 
@@ -28,7 +28,7 @@
                     <input
                       type="date"
                       name="data"
-                      required
+                      
                       class="input form-control form-control-danger"
                     /><!---->
                   </div>
@@ -41,8 +41,7 @@
                       <input
                         type="text"
                         name="quantidade"
-                        placeholder=""
-                        required
+                        placeholder=""                     
                         class="input form-control form-control-danger"
                       /><!---->
                     </div>
@@ -56,7 +55,7 @@
                         type="text"
                         name="valor_unitario"
                         placeholder=""
-                        required
+                        
                         class="input form-control form-control-danger"
                       /><!---->
                     </div>
@@ -70,7 +69,7 @@
                         type="text"
                         name="valor_compra"
                         placeholder=""
-                        required
+                        
                         class="input form-control form-control-danger"
                       /><!---->
                     </div>
@@ -84,7 +83,7 @@
                         type="text"
                         name="dolar"
                         placeholder=""
-                        required
+                        
                         class="input form-control form-control-danger"
                       /><!---->
                     </div>
@@ -99,7 +98,7 @@
                         type="text"
                         name="compra_dolar"
                         placeholder=""
-                        required
+                        
                         class="input form-control form-control-danger"
                       /><!---->
                     </div>

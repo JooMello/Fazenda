@@ -5,6 +5,8 @@ const slugify = require("slugify");
 const sequelize = require("sequelize");
 const { Op } = require("sequelize");
 
+var app = express();
+
 const Investidor = require("../investidor/Investidor")
 
 
@@ -35,36 +37,31 @@ router.get('/admin/compra/new', (req, res) => {
   });
 });
 
-router.post('/compra/save', (req, res, next) => {
-  var name = req.body.name;
-  var phone = req.body.phone;
-  var email = req.body.email;
-  var cpf = req.body.cpf;
-  var cep = req.body.cep;
-  var logradouro = req.body.logradouro;
-  var uf = req.body.uf;
-  var cidade = req.body.cidade;
-  var number = req.body.number;
-  var obs = req.body.obs;
+router.post('/compra/save', (req, res) => {
+  
+  var data = req.body.data;
+  var quantidade = req.body.quantidade;
+  var valor_unitario = req.body.valor_unitario;
+  var valor_compra = req.body.valor_compra;
+  var dolar = req.body.dolar;
+  var compra_dolar = req.body.compra_dolar;
+  var investidores = req.body.investidores;
 
-  Compra.create({
-    name: name,
-    slug: slugify(name),
-    phone: phone,
-    email: email,
-    cpf: cpf,
-    cep: cep,
-    logradouro: logradouro,
-    uf: uf,
-    cidade: cidade,
-    number: number,
-    obs: obs,
-  })
+  Compra.bulkCreate([{
+    data: data,
+    quantidade: quantidade,
+    valor_unitario: valor_unitario,
+    valor_compra: valor_compra,
+    dolar: dolar,
+    compra_dolar: compra_dolar,
+    investidoreId: investidores,
+  }], {
+    ignoreDuplicates: true,
+  } )
   .then(() => {
     res.redirect("/admin/compra");
   });
 });
-
 
 router.get("/admin/compra/edit/:id", (req, res) => {
   var id = req.params.id;
@@ -85,30 +82,22 @@ Compra.findByPk(id)
 })
 
 router.post('/compra/update', (req, res) => {
-  var id = req.body.id;
-  var name = req.body.name;
-  var phone = req.body.phone;
-  var email = req.body.email;
-  var cpf = req.body.cpf;
-  var cep = req.body.cep;
-  var logradouro = req.body.logradouro;
-  var uf = req.body.uf;
-  var cidade = req.body.cidade;
-  var number = req.body.number;
-  var obs = req.body.obs;
+  var data = req.body.data;
+  var quantidade = req.body.quantidade;
+  var valor_unitario = req.body.valor_unitario;
+  var valor_compra = req.body.valor_compra;
+  var dolar = req.body.dolar;
+  var compra_dolar = req.body.compra_dolar;
+  var investidor = req.body.investidor;
 
   Compra.update({
-    name: name,
-    slug: slugify(name),
-    phone: phone,
-    email: email,
-    cpf: cpf,
-    cep: cep,
-    logradouro: logradouro,
-    uf: uf,
-    cidade: cidade,
-    number: number,
-    obs: obs,
+    data: data,
+    quantidade: quantidade,
+    valor_unitario: valor_unitario,
+    valor_compra: valor_compra,
+    dolar: dolar,
+    compra_dolar: compra_dolar,
+    investidoreId: investidor,
   }, {
     where: {
       id: id,
@@ -142,5 +131,21 @@ router.post('/compra/delete', (req, res) => {
     res.redirect("/admin/compra");
   }
 });
+
+app.get('/compra/:slug', (req, res) => {
+  var slug = req.params.slug;
+  Compra.findOne({
+    where:{
+      slug:slug,
+    },
+  }).then((compra) => {
+      Investidor.findAll().then((investidores) => {
+    res.render("compra",{
+      compra,
+      investidores,
+    })
+  })
+  })
+})
 
 module.exports = router;
