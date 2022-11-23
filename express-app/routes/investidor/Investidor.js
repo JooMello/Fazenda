@@ -1,6 +1,7 @@
 
 const Sequelize = require("sequelize");
-const connection = require("../../database/database");
+const connection = require("../../database/database")
+
 
 const Investidor = connection.define('investidores', {
     name: {
@@ -44,6 +45,8 @@ const Investidor = connection.define('investidores', {
     },
 }) 
 
+
 //Investidor.sync({ force: true });
+
 
 module.exports = Investidor;

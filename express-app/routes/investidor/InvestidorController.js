@@ -7,6 +7,7 @@ const {
   Op
 } = require("sequelize");
 
+const Compra = require("../compra/Compra");
 
 var app = express();
 
@@ -24,6 +25,8 @@ router.get('/admin/investidor', (req, res, next) => {
     });
   })
 });
+
+
 
 router.get('/admin/investidor/new', (req, res, next) => {
   Investidor.findAll().then((investidores) => {
@@ -49,7 +52,7 @@ router.post('/investidor/save', (req, res, next) => {
     name: name,
     slug: slugify(name),
     phone: phone,
-    email: email,
+    email: email,                                                                          
     cpf: cpf,
     cep: cep,
     logradouro: logradouro,
@@ -140,20 +143,6 @@ router.post('/investidor/delete', (req, res) => {
   }
 });
 
-app.get('/compra/:slug', (req, res) => {
-  var slug = req.params.slug;
-  Compra.findOne({
-    where:{
-      slug:slug,
-    },
-  }).then((compra) => {
-      Investidor.findAll().then((investidores) => {
-    res.render("compra",{
-      compra,
-      investidores,
-    })
-  })
-  })
-})
+
 
 module.exports = router;

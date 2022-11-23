@@ -13,12 +13,12 @@
                 <label>Nome </label>
                 <div class="input__container text-input">
                   
-                  <select name="investidores" class="form-control">
-                    <% investidores.forEach((investidores) => { %>
-                      <option value="<%= investidores.id %>"><%= investidores.name %></option>
-                      <% }) %>
+                  <select name="investidore" class="form-control">
+                    <% investidores.forEach((investidor) => { %>
+                      <option value="<%= investidor.id %>"><%= investidor.name %></option>
+                      <% }) %> 
                   </select>
-
+  
                   </div>
                   </div>
                 <br />

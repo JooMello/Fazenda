@@ -10,7 +10,6 @@ var app = express();
 const Investidor = require("../investidor/Investidor")
 
 
-
 router.get('/admin/compra', (req, res, next) => {
 
   Compra.findAll({
@@ -29,6 +28,7 @@ router.get('/admin/compra', (req, res, next) => {
   })
 });
 
+
 router.get('/admin/compra/new', (req, res) => {
   Investidor.findAll().then((investidores) => {
     res.render('admin/compra/new', {
@@ -45,19 +45,17 @@ router.post('/compra/save', (req, res) => {
   var valor_compra = req.body.valor_compra;
   var dolar = req.body.dolar;
   var compra_dolar = req.body.compra_dolar;
-  var investidores = req.body.investidores;
+  var investidor = req.body.investidor;
 
-  Compra.bulkCreate([{
+  Compra.create({
     data: data,
     quantidade: quantidade,
     valor_unitario: valor_unitario,
     valor_compra: valor_compra,
     dolar: dolar,
     compra_dolar: compra_dolar,
-    investidoreId: investidores,
-  }], {
-    ignoreDuplicates: true,
-  } )
+    investidoreId: investidor,
+  })
   .then(() => {
     res.redirect("/admin/compra");
   });
@@ -132,20 +130,6 @@ router.post('/compra/delete', (req, res) => {
   }
 });
 
-app.get('/compra/:slug', (req, res) => {
-  var slug = req.params.slug;
-  Compra.findOne({
-    where:{
-      slug:slug,
-    },
-  }).then((compra) => {
-      Investidor.findAll().then((investidores) => {
-    res.render("compra",{
-      compra,
-      investidores,
-    })
-  })
-  })
-})
+
 
 module.exports = router;
