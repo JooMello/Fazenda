@@ -12,13 +12,11 @@
                   <div class="input--with-addon currency-input">
                 <label>Nome </label>
                 <div class="input__container text-input">
-                  
-                  <select name="investidore" class="form-control">
+                  <select name="investidor" class="form-control">
                     <% investidores.forEach((investidor) => { %>
                       <option value="<%= investidor.id %>"><%= investidor.name %></option>
                       <% }) %> 
                   </select>
-  
                   </div>
                   </div>
                 <br />
@@ -28,7 +26,7 @@
                     <input
                       type="date"
                       name="data"
-                      
+                      required
                       class="input form-control form-control-danger"
                     /><!---->
                   </div>
@@ -40,8 +38,8 @@
                     <div class="input__container text-input">
                       <input
                         type="text"
-                        name="quantidade"
-                        placeholder=""                     
+                        name="quantidade"      
+                        required     
                         class="input form-control form-control-danger"
                       /><!---->
                     </div>
@@ -53,9 +51,8 @@
                     <div class="input__container text-input">
                       <input
                         type="text"
-                        name="valor_unitario"
-                        placeholder=""
-                        
+                        name="unitario"
+                        required
                         class="input form-control form-control-danger"
                       /><!---->
                     </div>
@@ -67,9 +64,8 @@
                     <div class="input__container number-input">
                       <input
                         type="text"
-                        name="valor_compra"
-                        placeholder=""
-                        
+                        name="total"
+                        required
                         class="input form-control form-control-danger"
                       /><!---->
                     </div>
@@ -82,8 +78,7 @@
                       <input
                         type="text"
                         name="dolar"
-                        placeholder=""
-                        
+                        required
                         class="input form-control form-control-danger"
                       /><!---->
                     </div>
@@ -94,11 +89,9 @@
                     <label>Compra - Dolar</label>
                     <div class="input__container text-input">
                       <input
-
                         type="text"
-                        name="compra_dolar"
-                        placeholder=""
-                        
+                        name="amount"
+                        required
                         class="input form-control form-control-danger"
                       /><!---->
                     </div>

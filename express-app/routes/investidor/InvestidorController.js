@@ -26,8 +26,6 @@ router.get('/admin/investidor', (req, res, next) => {
   })
 });
 
-
-
 router.get('/admin/investidor/new', (req, res, next) => {
   Investidor.findAll().then((investidores) => {
     res.render('admin/investidor/new', {

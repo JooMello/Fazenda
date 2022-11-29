@@ -26,14 +26,14 @@
       </thead>
       <tbody id="demo">
         <% compras.forEach(compra => { %>
-        <tr href="/<%= compra.slug %>">
-
+        <tr>
+          <td><%= compra.investidore.name %></td>
           <td><%= compra.data %></td>
           <td><%= compra.quantidade %></td>
-          <td><%= compra.valor_unitario %></td>
-          <td><%= compra.valor_compra %></td>
+          <td><%= compra.unitario %></td>
+          <td><%= compra.total %></td>
           <td><%= compra.dolar %></td>
-          <td><%= compra.compra_dolar %></td>
+          <td><%= compra.amount %></td>
           <td>
             <a
               href="/admin/compra/edit/<%= compra.id %>"

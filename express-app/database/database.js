@@ -6,11 +6,9 @@ const connection = new Sequelize("farm", "root", "T5u9w3p6#", {
   dialect: "mysql",
   timezone: "-03:00",
   define: {
-    timeStamps: true,
+    timeStamps: false,
   } 
 });
-
- 
 
 module.exports = connection;
     

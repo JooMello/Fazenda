@@ -10,51 +10,49 @@ var app = express();
 const Investidor = require("../investidor/Investidor")
 
 
-router.get('/admin/compra', (req, res, next) => {
-
+router.get('/admin/compra', async (req, res, next) => {
   Compra.findAll({
+    include: [{
+      model: Investidor,
+    }],
     order: [
       ["createdAt", "DESC"]
     ],
      raw: true,
     nest: true,
   }).then((compras) => {
-    Investidor.findAll().then((investidores) => {
       res.render('admin/compra/index', {
         compras,
-        investidores,
       });
-    })
   })
 });
-
 
 router.get('/admin/compra/new', (req, res) => {
   Investidor.findAll().then((investidores) => {
     res.render('admin/compra/new', {
-      investidores,
+      investidores: investidores,
     });
   });
 });
 
-router.post('/compra/save', (req, res) => {
-  
+router.post('/compra/save',  (req, res) => {
   var data = req.body.data;
   var quantidade = req.body.quantidade;
-  var valor_unitario = req.body.valor_unitario;
-  var valor_compra = req.body.valor_compra;
+  var unitario = req.body.unitario;
+  var total = req.body.total;
   var dolar = req.body.dolar;
-  var compra_dolar = req.body.compra_dolar;
+  var amount = req.body.amount;
   var investidor = req.body.investidor;
 
-  Compra.create({
+   Compra.create(
+   {
     data: data,
     quantidade: quantidade,
-    valor_unitario: valor_unitario,
-    valor_compra: valor_compra,
+    unitario: unitario,
+    total: total,
     dolar: dolar,
-    compra_dolar: compra_dolar,
-    investidoreId: investidor,
+    amount: amount,
+    investidoreId: investidor
   })
   .then(() => {
     res.redirect("/admin/compra");
@@ -82,19 +80,19 @@ Compra.findByPk(id)
 router.post('/compra/update', (req, res) => {
   var data = req.body.data;
   var quantidade = req.body.quantidade;
-  var valor_unitario = req.body.valor_unitario;
-  var valor_compra = req.body.valor_compra;
+  var unitario = req.body.unitario;
+  var total = req.body.total;
   var dolar = req.body.dolar;
-  var compra_dolar = req.body.compra_dolar;
+  var amount = req.body.amount;
   var investidor = req.body.investidor;
 
   Compra.update({
     data: data,
     quantidade: quantidade,
-    valor_unitario: valor_unitario,
-    valor_compra: valor_compra,
+    unitario: unitario,
+    total: total,
     dolar: dolar,
-    compra_dolar: compra_dolar,
+    amount: amount,
     investidoreId: investidor,
   }, {
     where: {

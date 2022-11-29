@@ -12,11 +12,11 @@ const Compra = connection.define('compras', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    valor_unitario: {
+    unitario: {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false
     },
-    valor_compra: {
+    total: {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false
     },
@@ -24,7 +24,7 @@ const Compra = connection.define('compras', {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false
     },
-    compra_dolar: {
+    amount: {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false
     },
@@ -33,8 +33,8 @@ const Compra = connection.define('compras', {
 // UM Investidor tem muitas compras
 // UMA Compra pertence a uma Investidor
 
-//Investidor.hasMany(Compra);
-//Compra.belongsTo(Investidor);
+Investidor.hasMany(Compra);
+Compra.belongsTo(Investidor);
 
 //Compra.sync({ force: true });
 
