@@ -1,0 +1,50 @@
+<%- include ("../../partials/header.ejs") %> <%- include
+("../../partials/navbar.ejs") %>
+
+<body>
+    <div class="container">
+      <hr />
+      <h2>Projeção de Venda</h2>
+  
+      <hr />
+      <a class="btn btn-primary" href="/admin/compra"
+      >Compra</a
+    >
+   
+    <hr />
+
+    <table id="tab" data-type="table-menu" class="table table-bordered">
+      <thead>
+        <tr id="table-header">
+          <th>Nome</th>
+          <th>Data Compra</th>
+          <th>Data Venda</th>
+          <th>Quantidade</th>
+          <th>Valor Unitário</th>
+          <th>Valor Compra</th>
+          <th>Dolar</th>
+          <th>Compra - Dolar</th>
+        </tr>
+      </thead>
+      <tbody id="demo">
+        <% compras.forEach(compra => { %>
+        <tr>
+          <td><%= compra.investidore.name %></td>
+          <td><%= compra.data %></td>
+          <td><%= ((compra.data) + (913)) %></td>
+          <td><%= compra.quantidade %></td>
+          <td><input type="text" class="" id="inputText"></td>
+          <td><%= compra.total %></td>
+          <td><%= compra.dolar %></td>
+          <td><%= compra.amount %></td>
+       
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+      </div>
+      </body>
+
+
+<%- include ("../../partials/footer.ejs") %>

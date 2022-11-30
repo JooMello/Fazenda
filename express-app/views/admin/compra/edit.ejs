@@ -3,9 +3,9 @@
 
 <body>
     <div class="container">
-    
+      <div class="card">
         <div class="card-header">
-      <h2>Atualizar Compra</h2>
+      <h2>Editar Compra</h2>
     </div>
       <hr />
       <div class="card-body">
@@ -13,13 +13,16 @@
             <div class="input--with-addon currency-input">
           <label>Nome</label>
            <input type="hidden" value="<%= compra.id %>" name="id" />
-          <input
-          class="form-control"
-          type="text"
-          name="investidor"
-            value="<%= compra.investidor.name %>"
-            required/>
-          </div>
+          <select name="investidor" class="form-control">
+                    <% investidores.forEach((investidor) => { %>
+                      <% if (investidor.id == compra.investidoreId) { %>
+                        <option value="<%= investidor.id %>" selected><%= investidor.name %></option>
+                        <% } else { %>
+                          <option value="<%= investidor.id %>"><%= investidor.name %></option>
+                          <% } %> 
+                       <% }) %> 
+                  </select>
+                  </div>
           <br />
 
           <div class="input--with-addon currency-input">
@@ -53,8 +56,8 @@
               <input
                 required="required"
                 type="text"
-                name="valor_unitario"
-                value="<%= compra.valor_unitario %>"
+                name="unitario"
+                value="<%= compra.unitario %>"
                 class="input form-control form-control-danger"
               /><!---->
             </div>
@@ -67,8 +70,8 @@
               <input
                 required="required"
                 type="text"
-                name="valor_compra"
-                value="<%= compra.valor_compra %>"
+                name="total"
+                value="<%= compra.total %>"
                 class="input form-control form-control-danger"
               /><!---->
             </div>
@@ -95,8 +98,8 @@
               <input
                 required="required"
                 type="text"
-                name="compra_dolar"
-                value="<%= compra.compra_dolar %>"
+                name="amount"
+                value="<%= compra.amount %>"
                 class="input form-control form-control-danger"
               /><!---->
             </div>
@@ -107,6 +110,7 @@
         </form>
       </div>
 
+      </div>
       </div>
       </body>
 

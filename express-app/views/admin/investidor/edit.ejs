@@ -2,8 +2,8 @@
 ("../../partials/navbar.ejs") %>
 
 <body>
-    <div class="container">
-    
+    <div class="container"> 
+      <div class="card">
         <div class="card-header">
       <h2>Atualizar Investidor</h2>
     </div>
@@ -124,18 +124,20 @@
           <textarea
             class="form-control"
             name="obs"
-            value="<%= investidor.obs %>"
+            value="<%- investidor.obs %>"
             required
-          ></textarea> 
+          ><%- investidor.obs %></textarea> 
 </div>
             
           <br />
           <button class="btn btn-success">Atualizar</button>
         </form>
       </div>
-
+      </div>
       </div>
       </body>
+
+
 
 
 <%- include ("../../partials/footer.ejs") %>

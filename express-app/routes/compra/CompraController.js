@@ -65,15 +65,19 @@ router.get("/admin/compra/edit/:id", (req, res) => {
 Compra.findByPk(id)
 .then((compra) => {
   if (compra != undefined) {
+
+    Investidor.findAll().then((investidores) => {
     res.render('admin/compra/edit', {
-      compra,
+      compra: compra,
+      investidores: investidores,
     })
+  })
   } else{
-    res.redirect('/');
+    res.redirect('/admin/compra');
   }
 })
 .catch((err) => {
-  res.redirect('/');
+  res.redirect('/admin/compra');
 })
 })
 

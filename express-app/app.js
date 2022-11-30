@@ -9,11 +9,14 @@ const express = require("express"),
 const sequelize = require("sequelize");
 const slugify = require("slugify");
 const connection = require("./database/database")
+const dolar = require('./api_dolar')
+const cep = require('./api-cep')
+
 
 
 var investidorRouter = require('./routes/investidor/InvestidorController');
 var compraRouter = require('./routes/compra/CompraController');
-
+var projecaoRouter = require('./routes/projecao/ProjecaoController')
 
 //view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -28,6 +31,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", routes);
 app.use('/', investidorRouter);
 app.use('/', compraRouter);
+app.use('/', projecaoRouter);
 
 connection
   .authenticate()
