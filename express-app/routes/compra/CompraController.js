@@ -5,8 +5,6 @@ const slugify = require("slugify");
 const sequelize = require("sequelize");
 const { Op } = require("sequelize");
 
-var app = express();
-
 const Investidor = require("../investidor/Investidor")
 
 
@@ -21,9 +19,12 @@ router.get('/admin/compra', async (req, res, next) => {
      raw: true,
     nest: true,
   }).then((compras) => {
+    Investidor.findAll().then((investidores) => {
       res.render('admin/compra/index', {
-        compras,
+        compras: compras,
+        investidores: investidores,
       });
+    })
   })
 });
 
@@ -131,7 +132,6 @@ router.post('/compra/delete', (req, res) => {
     res.redirect("/admin/compra");
   }
 });
-
 
 
 module.exports = router;

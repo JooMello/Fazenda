@@ -5,6 +5,7 @@ const slugify = require("slugify");
 const sequelize = require("sequelize");
 const { Op } = require("sequelize");
 
+
 var app = express();
 
 const Investidor = require("../investidor/Investidor")

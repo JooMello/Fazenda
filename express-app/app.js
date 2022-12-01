@@ -6,17 +6,22 @@ const express = require("express"),
     routes = require("./routes"),
     app = express();
 
+
 const sequelize = require("sequelize");
 const slugify = require("slugify");
 const connection = require("./database/database")
 const dolar = require('./api_dolar')
 const cep = require('./api-cep')
 
-
-
 var investidorRouter = require('./routes/investidor/InvestidorController');
 var compraRouter = require('./routes/compra/CompraController');
-var projecaoRouter = require('./routes/projecao/ProjecaoController')
+var projecaoRouter = require('./routes/projecao/ProjecaoController');
+var vendaRouter = require('./routes/venda/VendaController');
+///////////////
+const Investidor = require('./routes/investidor/Investidor');
+const Compra = require('./routes/compra/Compra');
+const Venda = require('./routes/venda/Venda');
+
 
 //view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -32,6 +37,7 @@ app.use("/", routes);
 app.use('/', investidorRouter);
 app.use('/', compraRouter);
 app.use('/', projecaoRouter);
+app.use('/', vendaRouter);
 
 connection
   .authenticate()
@@ -42,6 +48,113 @@ connection
     console.log(error);
   });
 
+  //Investidor
+app.get('/investidor/:slug', (req, res) => {
+  var slug = req.params.slug;
+  Investidor.findOne({
+    where:{
+      slug:slug,
+    },
+    include: [{
+      model: Compra
+    }]
+  }).then((investidor) => {
+    if (investidor != undefined) {
+      Investidor.findAll().then((investidores) => {
+    res.render("admin/compra/filter",{
+      compras: investidor.compras,
+      investidores: investidores,
+    })
+  })
+} else {
+  res.redirect("admin/compra/index");
+}
+  })
+  .catch((err) => {
+    res.redirect("admin/compra/index");
+  });
+})
+
+//Compra
+app.get('/compra/:slug', (req, res) => {
+  var slug = req.params.slug;
+  Compra.findOne({
+    include: [{
+      model: Investidor,
+    }],
+    where:{
+      slug:slug,
+    },
+  }).then((compra) => {
+    if (compra != undefined) {
+      Investidor.findAll().then((investidores) => {
+    res.render("compra",{
+      compra: compra,
+      investidores: investidores,
+    })
+  })
+} else {
+  res.redirect("admin/compra/index");
+}
+  })
+  .catch((err) => {
+    res.redirect("admin/compra/index");
+  });
+})
+
+///Projeção
+app.get('/projecao/:slug', (req, res) => {
+  var slug = req.params.slug;
+  Compra.findOne({
+    include: [{
+      model: Investidor,
+    }],
+    where:{
+      slug:slug,
+    },
+  }).then((compra) => {
+    if (compra != undefined) {
+      Investidor.findAll().then((investidores) => {
+    res.render("compra",{
+      compra: compra,
+      investidores: investidores,
+    })
+  })
+} else {
+  res.redirect("admin/projecao/index");
+}
+  })
+  .catch((err) => {
+    res.redirect("admin/projecao/index");
+  });
+})
+
+//Venda
+app.get('/venda/:slug', (req, res) => {
+  var slug = req.params.slug;
+  Investidor.findOne({
+    where:{
+      slug:slug,
+    },
+    include: [{
+      model: Venda
+    }]
+  }).then((investidor) => {
+    if (investidor != undefined) {
+      Investidor.findAll().then((investidores) => {
+    res.render("admin/venda/filter",{
+      vendas: investidor.vendas,
+      investidores: investidores,
+    })
+  })
+} else {
+  res.redirect("admin/venda/index");
+}
+  })
+  .catch((err) => {
+    res.redirect("admin/venda/index");
+  });
+})
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

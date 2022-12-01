@@ -1,0 +1,109 @@
+<%- include ("../../partials/header.ejs") %> <%- include
+("../../partials/navbar.ejs") %>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+              <h2>Novo Venda</h2>
+            </div>
+            <div class="card-body">
+              <form method="POST" action="/venda/save">
+                  <div class="input--with-addon currency-input">
+                <label>Nome </label>
+                <div class="input__container text-input">
+                  <select name="investidor" class="form-control">
+                    <% investidores.forEach((investidor) => { %>
+                      <option value="<%= investidor.id %>"><%= investidor.name %></option>
+                      <% }) %> 
+                  </select>
+                  </div>
+                  </div>
+                <br />
+                <div class="input--with-addon currency-input">
+                  <label>Data Venda</label>
+                  <div class="input__container numeral-input">
+                    <input
+                      type="date"
+                      name="data"
+                      required
+                      class="input form-control form-control-danger"
+                    /><!---->
+                  </div>
+                  <!----><!---->
+                </div>
+                <br>
+                <div class="input--with-addon currency-input">
+                    <label>Quantidade</label>
+                    <div class="input__container text-input">
+                      <input
+                        type="text"
+                        name="quantidade"      
+                        required     
+                        class="input form-control form-control-danger"
+                      /><!---->
+                    </div>
+                    <!----><!---->
+                  </div>
+                <br />
+                <div class="input--with-addon currency-input">
+                    <label>Valor Unitário</label>
+                    <div class="input__container text-input">
+                      <input
+                        type="text"
+                        name="unitario"
+                        required
+                        class="input form-control form-control-danger"
+                      /><!---->
+                    </div>
+                    <!----><!---->
+                  </div>
+                <br />
+                <div class="input--with-addon currency-input">
+                    <label>Valor Venda</label>
+                    <div class="input__container number-input">
+                      <input
+                        type="text"
+                        name="total"
+                        required
+                        class="input form-control form-control-danger"
+                      /><!---->
+                    </div>
+                    <!----><!---->
+                  </div>
+                <br />
+                <div class="input--with-addon currency-input">
+                    <label>Dolar</label>
+                    <div class="input__container text-input">
+                      <input
+                        type="text"
+                        name="dolar"
+                        required
+                        class="input form-control form-control-danger"
+                      /><!---->
+                    </div>
+                    <!----><!---->
+                  </div>
+                  <br>
+                  <div class="input--with-addon currency-input">
+                    <label>Venda - Dolar</label>
+                    <div class="input__container text-input">
+                      <input
+                        type="text"
+                        name="amount"
+                        required
+                        class="input form-control form-control-danger"
+                      /><!---->
+                    </div>
+                    <!----><!---->
+                  </div>
+                <br />
+                <button class="btn btn-success">Salvar</button>
+              </form>
+            </div>
+          </div>
+      </div>
+      </body>
+
+
+<%- include ("../../partials/footer.ejs") %>
