@@ -1,0 +1,151 @@
+<%- include ("../../partials/header.ejs") %> <%- include
+("../../partials/navbar.ejs") %>
+
+<body>
+    <div class="container">
+      <hr />
+      <h2>Relatórios</h2>
+  
+      <hr />
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+
+      
+
+   <div class="col-4">
+    <div class="card text-center">
+       <div class="dropdown">
+<button class="btn dropdown-toggle form-control" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+Investidor
+</button>
+<ul class="dropdown-menu">
+  <li >
+    <a class="dropdown-item"  href="/admin/relatorios">TODOS</a>
+  </li>
+ <% investidores.forEach(investidor => { %>
+<li >
+        <a class="dropdown-item"  href="/relatorio/<%= investidor.slug %>"><%= investidor.name %></a>
+    </li>
+ <% }) %>
+</ul>
+</div>
+
+    </div>
+   </div>
+
+    <div class="col-2">
+    <div class="card">
+      <!--Barra de Pesquisa-->
+      <form class="form-search">
+        <input
+          class="form-control"
+          type="text"
+          name="search"
+          id="search"
+          placeholder="Pesquisar..."
+        />
+      </form>
+    </div>
+     </div>
+    </div>
+<hr/>
+
+<div  class="table1 text-center">
+<table id="tab" data-type="table-menu" class="table table-bordered">
+    <thead>
+        <tr>
+            Resultado Final Investimento
+            </tr>
+      <tr id="table-header">
+        <th>Nº de Animais Vendidos</th>
+        <th>Valor Unitário</th>
+        <th>Valor da Venda</th>
+        <th>Capital Investido</th>
+        <th>% Inv x Venda</th>
+        <th>Lucro/Inv</th>
+      </tr>
+    </thead>
+    <tbody id="demo">
+     
+        <tr class="pesquisar" >
+        <td><%= quantidade %></td>
+        <td><%= unitario %></td>
+        <td><%= amountV %></td>
+        <td><%= CapitalInvestido %></td>
+        <td><%= InvVenda %>%</td>
+        <td><%= Lucro %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<hr/>
+
+<div  class="table2 text-center">
+    <table id="tab" data-type="table-menu" class="table table-bordered">
+        <thead>
+            <tr>
+                Distribuição Contribuintes
+                </tr>
+          <tr>
+            <th colspan="2">Nome</th>
+        </tr>
+          <tr>
+            <th>Lucro/Inv</th>
+            <th>Percentual %</th>
+          </tr>
+        </thead>
+        <tbody id="demo">   
+            <tr class="pesquisar" >
+            <td><%= quantidade %></td>
+            <td><%= unitario %></td>
+            <td><%= amountV %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <hr/>
+<div class="dashboard">
+    <canvas id="myChart"></canvas>
+  </div>
+
+      </div>
+      </body>
+
+
+<%- include ("../../partials/footer.ejs") %>
+
+
+<!-- script dashboard   -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+   const data = {
+  labels: [
+    'Red',
+    'Blue',
+    'Yellow'
+  ],
+  datasets: [{
+    label: 'My First Dataset',
+    data: [300, 50, 100],
+    backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)'
+    ],
+    hoverOffset: 4
+  }]
+};
+
+
+   const config = {
+  type: 'doughnut',
+  data: data,
+};
+
+ </script>
+
+
+<script>
+    const myChart = new Chart(document.getElementById("myChart"), config);
+  </script>

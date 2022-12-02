@@ -1,0 +1,68 @@
+const express = require('express');
+const router = express.Router();
+const slugify = require("slugify");
+const sequelize = require("sequelize");
+const { Op } = require("sequelize");
+
+const Investidor = require("../investidor/Investidor");
+const Compra = require('../compra/Compra');
+const Venda = require('../venda/Venda');
+
+
+router.get('/admin/relatorios', async (req, res, next) => {
+
+  //filtragem de dados, por peridodo que eles foram adicionados no BD
+  //formatar numeros em valores decimais (.toLocaleFixed(2))
+  Number.prototype.toLocaleFixed = function (n) {
+    return this.toLocaleString(undefined, {
+      minimumFractionDigits: n,
+      maximumFractionDigits: n
+    });
+  };
+
+    //////////////////////Quantidade
+    var amountQ = await Venda.findOne({
+      attributes: [sequelize.fn("sum", sequelize.col("quantidade"))],
+      raw: true
+    });
+    var quantidade = (Number(amountQ['sum(`quantidade`)']))
+
+      //////////////////////Unitário
+      var amountU = await Venda.findOne({
+        attributes: [sequelize.fn("avg", sequelize.col("unitario"))],
+        raw: true
+      });
+      var unitarioT = (Number(amountU['avg(`unitario`)']))
+      var unitario = (Number(amountU['avg(`unitario`)'])).toLocaleFixed(2);
+
+      /////Valor da Venda
+      var amountVT = (Number(quantidade) * Number(unitarioT))
+      var amountV = (Number(quantidade) * Number(unitarioT)).toLocaleFixed(2);
+      
+          //////////////////////Capital Investidor
+    var amountT = await Compra.findOne({
+      attributes: [sequelize.fn("sum", sequelize.col("total"))],
+      raw: true
+    });
+    var CapitalInvestidoT = (Number(amountT['sum(`total`)']))
+    var CapitalInvestido = (Number(amountT['sum(`total`)'])).toLocaleFixed(2);
+
+    ///Investimento sobre a Venda
+    var InvVenda = ((Number(CapitalInvestidoT) / Number(amountVT)) * (100)).toLocaleFixed(2);
+  
+    ///Lucro sobre Investimento
+    var Lucro = (Number(amountVT) - Number(CapitalInvestidoT)).toLocaleFixed(2);
+
+  Venda.findAll().then((vendas) => {
+    Investidor.findAll().then((investidores) => {
+      res.render('admin/relatorios/index', {
+        vendas: vendas,
+        investidores: investidores,
+        quantidade, unitario, amountV, CapitalInvestido, InvVenda, Lucro,
+      });
+    })
+  })
+});
+
+
+module.exports = router;

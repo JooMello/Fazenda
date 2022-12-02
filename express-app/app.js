@@ -17,10 +17,12 @@ var investidorRouter = require('./routes/investidor/InvestidorController');
 var compraRouter = require('./routes/compra/CompraController');
 var projecaoRouter = require('./routes/projecao/ProjecaoController');
 var vendaRouter = require('./routes/venda/VendaController');
+var relatorioRouter = require('./routes/relatorio/RelatorioController');
 ///////////////
 const Investidor = require('./routes/investidor/Investidor');
 const Compra = require('./routes/compra/Compra');
 const Venda = require('./routes/venda/Venda');
+
 
 
 //view engine setup
@@ -38,6 +40,7 @@ app.use('/', investidorRouter);
 app.use('/', compraRouter);
 app.use('/', projecaoRouter);
 app.use('/', vendaRouter);
+app.use('/', relatorioRouter);
 
 connection
   .authenticate()
@@ -153,6 +156,36 @@ app.get('/venda/:slug', (req, res) => {
   })
   .catch((err) => {
     res.redirect("admin/venda/index");
+  });
+})
+
+//Relatório
+app.get('/relatorio/:slug', (req, res) => {
+  var slug = req.params.slug;
+  Investidor.findOne({
+    where:{
+      slug:slug,
+    },
+    include: [{
+      model: Venda
+    },{
+      model: Compra
+    }],
+  }).then((investidor) => {
+    if (investidor != undefined) {
+      Investidor.findAll().then((investidores) => {
+    res.render("admin/relatorios/index",{
+      vendas: investidor.vendas,
+      compra: investidor.compras,
+      investidores: investidores,
+    })
+  })
+} else {
+  res.redirect("admin/relatorios/index");
+}
+  })
+  .catch((err) => {
+    res.redirect("admin/relatorios/index");
   });
 })
 

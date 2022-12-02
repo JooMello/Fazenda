@@ -36,6 +36,6 @@ const Venda = connection.define('vendas', {
 Investidor.hasMany(Venda);
 Venda.belongsTo(Investidor);
 
-Venda.sync({ force: true });
+//Venda.sync({ force: true });
 
 module.exports = Venda;
