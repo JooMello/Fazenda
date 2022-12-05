@@ -4,7 +4,7 @@
 <body>
     <div class="container">
       <hr />
-      <h2>Relatórios</h2>
+      <h2>Estoque</h2>
   
       <hr />
       <div class="row row-cols-1 row-cols-md-2 g-4">
@@ -35,52 +35,35 @@ Investidor
 <hr/>
 
 <div  class="table1 text-center">
-    <h2>Cálculo de Retorno de Investimento</h2>
 <table id="tab" data-type="table-menu" class="table table-bordered">
     <thead>
        
             
       <tr id="table-header">
-        <th>Nº de Animais Vendidos</th>
-        <th>Média Ponderada</th>
-        <th>Valor da Venda</th>
-        <th>Capital Investido</th>
-        <th>% Inv x Venda</th>
-        <th>Lucro/Inv</th>
+        <th>Nome</th>
+        <th>Nº de Animais Comprados</th>
+        <th>Mortes</th>
+        <th>Vendidos</th>
+        <th>Estoque</th>
       </tr>
     </thead>
     <tbody id="demo">
-     
+        <% compras.forEach(compra => { %>
+        <% vendas.forEach(venda => { %>
         <tr class="pesquisar" >
-        <td><%= quantidade %></td>
-        <td><%= unitario %></td>
-        <td><%= amountV %></td>
-        <td><%= CapitalInvestido %></td>
-        <td><%= InvVenda %>%</td>
-        <td><%= Lucro %></td>
+        <td><%= compra.investidore.name %></td>
+        <td><%= compra.quantidade %></td>
+        <td></td>
+        <td><%= venda.quantidade %></td>
+        <td></td>
       </tr>
+      <% }) %>
+         <% }) %>
     </tbody>
   </table>
 </div>
 <hr/>
 
-<div  class="table2 text-center">
-    <h2>  Distribuição Contribuintes</h2>
-    <table id="tab" data-type="table-menu" class="table table-bordered">
-        <thead>
-          <tr>
-            <th rowspan="2" class="center">Fazenda</th>
-            <th>Lucro/Inv</th>
-            <th>Percentual %</th>
-          </tr>
-          <tr class="pesquisar" >
-            <td><%= LucroF %></td>
-            <td><%= percentualF %>%</td>
-          </tr>
-        </thead>
-      </table>
-    </div>
-    <hr/>
 <div class="dashboard">
     <canvas id="myChart"></canvas>
   </div>

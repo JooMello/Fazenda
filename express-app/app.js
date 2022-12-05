@@ -18,6 +18,7 @@ var compraRouter = require('./routes/compra/CompraController');
 var projecaoRouter = require('./routes/projecao/ProjecaoController');
 var vendaRouter = require('./routes/venda/VendaController');
 var relatorioRouter = require('./routes/relatorio/RelatorioController');
+var estoqueRouter = require('./routes/estoque/EstoqueController');
 ///////////////
 const Investidor = require('./routes/investidor/Investidor');
 const Compra = require('./routes/compra/Compra');
@@ -41,6 +42,7 @@ app.use('/', compraRouter);
 app.use('/', projecaoRouter);
 app.use('/', vendaRouter);
 app.use('/', relatorioRouter);
+app.use('/', estoqueRouter);
 
 connection
   .authenticate()
@@ -160,7 +162,58 @@ app.get('/venda/:slug', (req, res) => {
 })
 
 //Relatório
-app.get('/relatorio/:slug', (req, res) => {
+app.get('/relatorio/:slug', async (req, res) => {
+
+  
+  //filtragem de dados, por peridodo que eles foram adicionados no BD
+  //formatar numeros em valores decimais (.toLocaleFixed(2))
+  Number.prototype.toLocaleFixed = function (n) {
+    return this.toLocaleString(undefined, {
+      minimumFractionDigits: n,
+      maximumFractionDigits: n
+    });
+  };
+
+    //////////////////////Quantidade
+    var amountQ = await Venda.findOne({
+      attributes: [sequelize.fn("sum", sequelize.col("quantidade"))],
+      raw: true
+    });
+    var quantidade = (Number(amountQ['sum(`quantidade`)']))
+
+      //////////////////////Unitário
+      var amountU = await Venda.findOne({
+        attributes: [sequelize.fn("avg", sequelize.col("unitario"))],
+        raw: true
+      });
+      var unitarioT = (Number(amountU['avg(`unitario`)']))
+      var unitario = (Number(amountU['avg(`unitario`)'])).toLocaleFixed(2);
+
+      /////Valor da Venda
+      var amountVT = (Number(quantidade) * Number(unitarioT))
+      var amountV = (Number(quantidade) * Number(unitarioT)).toLocaleFixed(2);
+      
+          //////////////////////Capital Investidor
+    var amountT = await Compra.findOne({
+      attributes: [sequelize.fn("sum", sequelize.col("total"))],
+      raw: true
+    });
+    var CapitalInvestidoT = (Number(amountT['sum(`total`)']))
+    var CapitalInvestido = (Number(amountT['sum(`total`)'])).toLocaleFixed(2);
+
+    ///Investimento sobre a Venda
+    var InvVenda = ((Number(CapitalInvestidoT) / Number(amountVT)) * (100)).toLocaleFixed(2);
+  
+    ///Lucro sobre Investimento
+    var LucroN = (Number(amountVT) - Number(CapitalInvestidoT));
+    var Lucro = (Number(amountVT) - Number(CapitalInvestidoT)).toLocaleFixed(2);
+
+    ///Lucro sobre investimento Fazenda
+    var LucroFN = (Number(LucroN) / 2)
+    var LucroF = (Number(LucroN) / 2).toLocaleFixed(2);
+
+    //Percentual Fazenda 
+    var percentualF = ((Number(LucroFN) / Number(LucroN)) * (100)).toLocaleFixed(2);
   var slug = req.params.slug;
   Investidor.findOne({
     where:{
@@ -178,6 +231,8 @@ app.get('/relatorio/:slug', (req, res) => {
       vendas: investidor.vendas,
       compra: investidor.compras,
       investidores: investidores,
+      quantidade, unitario, amountV, CapitalInvestido, InvVenda, Lucro,
+        LucroF, percentualF,
     })
   })
 } else {

@@ -51,7 +51,15 @@ router.get('/admin/relatorios', async (req, res, next) => {
     var InvVenda = ((Number(CapitalInvestidoT) / Number(amountVT)) * (100)).toLocaleFixed(2);
   
     ///Lucro sobre Investimento
+    var LucroN = (Number(amountVT) - Number(CapitalInvestidoT));
     var Lucro = (Number(amountVT) - Number(CapitalInvestidoT)).toLocaleFixed(2);
+
+    ///Lucro sobre investimento Fazenda
+    var LucroFN = (Number(LucroN) / 2)
+    var LucroF = (Number(LucroN) / 2).toLocaleFixed(2);
+
+    //Percentual Fazenda 
+    var percentualF = ((Number(LucroFN) / Number(LucroN)) * (100)).toLocaleFixed(2);
 
   Venda.findAll().then((vendas) => {
     Investidor.findAll().then((investidores) => {
@@ -59,6 +67,7 @@ router.get('/admin/relatorios', async (req, res, next) => {
         vendas: vendas,
         investidores: investidores,
         quantidade, unitario, amountV, CapitalInvestido, InvVenda, Lucro,
+        LucroF, percentualF,
       });
     })
   })
