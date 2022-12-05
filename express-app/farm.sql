@@ -1,5 +1,5 @@
 -- MySQL Workbench Synchronization
--- Generated: 2022-11-29 11:14
+-- Generated: 2022-12-05 08:58
 -- Model: New Model
 -- Version: 1.0
 -- Project: Name of the project
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `farm`.`compras` (
     ON DELETE SET NULL
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 8
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -50,6 +50,29 @@ CREATE TABLE IF NOT EXISTS `farm`.`investidores` (
   `createdAt` DATETIME NOT NULL,
   `updatedAt` DATETIME NOT NULL,
   PRIMARY KEY (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 7
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS `farm`.`vendas` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `data` DATE NOT NULL,
+  `quantidade` VARCHAR(255) NOT NULL,
+  `unitario` DECIMAL(10,2) NOT NULL,
+  `total` DECIMAL(10,2) NOT NULL,
+  `dolar` DECIMAL(10,2) NOT NULL,
+  `amount` DECIMAL(10,2) NOT NULL,
+  `createdAt` DATETIME NOT NULL,
+  `updatedAt` DATETIME NOT NULL,
+  `investidoreId` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `investidoreId` (`investidoreId` ASC) VISIBLE,
+  CONSTRAINT `vendas_ibfk_1`
+    FOREIGN KEY (`investidoreId`)
+    REFERENCES `farm`.`investidores` (`id`)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb4
