@@ -23,7 +23,7 @@ var estoqueRouter = require('./routes/estoque/EstoqueController');
 const Investidor = require('./routes/investidor/Investidor');
 const Compra = require('./routes/compra/Compra');
 const Venda = require('./routes/venda/Venda');
-
+const Morte = require('./routes/estoque/Estoque');
 
 
 //view engine setup
@@ -163,18 +163,22 @@ app.get('/venda/:slug', (req, res) => {
 
 //Relatório
 app.get('/relatorio/:slug', async (req, res) => {
-
   
-  //filtragem de dados, por peridodo que eles foram adicionados no BD
-  //formatar numeros em valores decimais (.toLocaleFixed(2))
-  Number.prototype.toLocaleFixed = function (n) {
-    return this.toLocaleString(undefined, {
-      minimumFractionDigits: n,
-      maximumFractionDigits: n
-    });
-  };
+  var slug = req.params.slug;
+  Investidor.findOne({
+    where:{
+      slug:slug,
+    },
+    include: [{
+      model: Venda
+    },{
+      model: Compra
+    }],
+  }).then((investidor) => {
+    if (investidor != undefined) {
+      Investidor.findAll().then(async (investidores) => {
 
-    //////////////////////Quantidade
+          //////////////////////Quantidade
     var amountQ = await Venda.findOne({
       attributes: [sequelize.fn("sum", sequelize.col("quantidade"))],
       raw: true
@@ -214,25 +218,13 @@ app.get('/relatorio/:slug', async (req, res) => {
 
     //Percentual Fazenda 
     var percentualF = ((Number(LucroFN) / Number(LucroN)) * (100)).toLocaleFixed(2);
-  var slug = req.params.slug;
-  Investidor.findOne({
-    where:{
-      slug:slug,
-    },
-    include: [{
-      model: Venda
-    },{
-      model: Compra
-    }],
-  }).then((investidor) => {
-    if (investidor != undefined) {
-      Investidor.findAll().then((investidores) => {
+
     res.render("admin/relatorios/index",{
       vendas: investidor.vendas,
       compra: investidor.compras,
       investidores: investidores,
       quantidade, unitario, amountV, CapitalInvestido, InvVenda, Lucro,
-        LucroF, percentualF,
+      LucroF, percentualF,
     })
   })
 } else {
@@ -243,6 +235,60 @@ app.get('/relatorio/:slug', async (req, res) => {
     res.redirect("admin/relatorios/index");
   });
 })
+
+//Estoque
+app.get('/estoque/:slug', async (req, res) => {
+  var slug = req.params.slug;
+  Investidor.findOne({
+    where:{
+      slug:slug,
+    },
+    include: [{
+      model: Venda
+    },
+    {
+      model: Compra,
+    }]
+  }).then( async (investidor) => {
+    await  Morte.findOne({
+      attributes: [sequelize.fn("sum", sequelize.col("quantidade"))],
+      raw: true
+    }).then( async (amountQ) => {
+    let morte = (Number(amountQ['sum(`quantidade`)']))
+    await Compra.findOne({
+      attributes: [sequelize.fn("sum", sequelize.col("quantidade"))],
+      raw: true
+    }).then( async (amountQc) => {
+    let comprados = (Number(amountQc['sum(`quantidade`)']))
+    await Venda.findOne({
+      attributes: [sequelize.fn("sum", sequelize.col("quantidade"))],
+      raw: true
+    }).then((amountQv) => {
+    let vendidos = (Number(amountQv['sum(`quantidade`)']))
+
+    var estoque = ((comprados) - (morte) - (vendidos));
+
+    if (investidor != undefined) {
+      Investidor.findAll().then((investidores) => {
+    res.render("admin/estoque/index",{
+      vendas: investidor.vendas,
+      compras: investidor.compras,
+      investidores: investidores,
+      morte,comprados,vendidos,estoque,
+    })
+  })
+} else {
+  res.redirect("admin/estoque/index");
+}
+  })
+})
+    })
+  })
+  .catch((err) => {
+    res.redirect("admin/estoque/index");
+  });
+})
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

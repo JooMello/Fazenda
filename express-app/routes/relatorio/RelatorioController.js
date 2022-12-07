@@ -20,7 +20,11 @@ router.get('/admin/relatorios', async (req, res, next) => {
     });
   };
 
-    //////////////////////Quantidade
+    Compra.findAll().then((compras) => {
+  Venda.findAll().then((vendas) => {
+    Investidor.findAll().then(async (investidores) => {
+
+       //////////////////////Quantidade
     var amountQ = await Venda.findOne({
       attributes: [sequelize.fn("sum", sequelize.col("quantidade"))],
       raw: true
@@ -61,15 +65,15 @@ router.get('/admin/relatorios', async (req, res, next) => {
     //Percentual Fazenda 
     var percentualF = ((Number(LucroFN) / Number(LucroN)) * (100)).toLocaleFixed(2);
 
-  Venda.findAll().then((vendas) => {
-    Investidor.findAll().then((investidores) => {
       res.render('admin/relatorios/index', {
+        compras: compras,
         vendas: vendas,
         investidores: investidores,
         quantidade, unitario, amountV, CapitalInvestido, InvVenda, Lucro,
         LucroF, percentualF,
       });
     })
+  })
   })
 });
 

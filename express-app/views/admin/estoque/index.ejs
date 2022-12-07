@@ -9,7 +9,13 @@
       <hr />
       <div class="row row-cols-1 row-cols-md-2 g-4">
 
-      
+        <div class="col-2">
+            <div class="card text-center">
+                <a class="btn btn-primary form-control" href="/admin/estoque/newMorte"
+                >Lançar Morte</a
+              >
+                </div>
+            </div>
 
    <div class="col-4">
     <div class="card text-center">
@@ -19,11 +25,11 @@ Investidor
 </button>
 <ul class="dropdown-menu">
   <li >
-    <a class="dropdown-item"  href="/admin/relatorios">TODOS</a>
+    <a class="dropdown-item"  href="/admin/estoque">TODOS</a>
   </li>
  <% investidores.forEach(investidor => { %>
 <li >
-        <a class="dropdown-item"  href="/relatorio/<%= investidor.slug %>"><%= investidor.name %></a>
+        <a class="dropdown-item"  href="/estoque/<%= investidor.slug %>"><%= investidor.name %></a>
     </li>
  <% }) %>
 </ul>
@@ -40,7 +46,6 @@ Investidor
        
             
       <tr id="table-header">
-        <th>Nome</th>
         <th>Nº de Animais Comprados</th>
         <th>Mortes</th>
         <th>Vendidos</th>
@@ -48,17 +53,13 @@ Investidor
       </tr>
     </thead>
     <tbody id="demo">
-        <% compras.forEach(compra => { %>
-        <% vendas.forEach(venda => { %>
         <tr class="pesquisar" >
-        <td><%= compra.investidore.name %></td>
-        <td><%= compra.quantidade %></td>
-        <td></td>
-        <td><%= venda.quantidade %></td>
-        <td></td>
+        <td><%= comprados %></td>
+        <td><%= morte %></td>
+        <td><%= vendidos %></td>
+        <td><%= estoque %></td>
       </tr>
-      <% }) %>
-         <% }) %>
+
     </tbody>
   </table>
 </div>
