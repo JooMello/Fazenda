@@ -83,6 +83,7 @@ Venda.findByPk(id)
 })
 
 router.post('/venda/update', (req, res) => {
+  var id = req.body.id;
   var data = req.body.data;
   var quantidade = req.body.quantidade;
   var unitario = req.body.unitario;

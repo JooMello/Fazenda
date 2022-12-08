@@ -53,121 +53,64 @@ connection
     console.log(error);
   });
 
-  //Investidor
-app.get('/investidor/:slug', (req, res) => {
-  var slug = req.params.slug;
-  Investidor.findOne({
-    where:{
-      slug:slug,
-    },
-    include: [{
-      model: Compra
-    }]
-  }).then((investidor) => {
-    if (investidor != undefined) {
+  //Compra
+app.get('/compra/:id', (req, res) => {
+  var id = req.params.id;
+      Compra.findAll({
+        include: [{
+          model: Investidor,
+        }],
+        where:{
+          investidoreId:id,
+        },
+         raw: true,
+        nest: true,
+      }).then((compras) => {
       Investidor.findAll().then((investidores) => {
-    res.render("admin/compra/filter",{
-      compras: investidor.compras,
+    res.render("admin/compra/index",{
       investidores: investidores,
+      compras:compras,
     })
-  })
-} else {
-  res.redirect("admin/compra/index");
-}
-  })
+
+})
+})
   .catch((err) => {
     res.redirect("admin/compra/index");
-  });
-})
-
-//Compra
-app.get('/compra/:slug', (req, res) => {
-  var slug = req.params.slug;
-  Compra.findOne({
-    include: [{
-      model: Investidor,
-    }],
-    where:{
-      slug:slug,
-    },
-  }).then((compra) => {
-    if (compra != undefined) {
-      Investidor.findAll().then((investidores) => {
-    res.render("compra",{
-      compra: compra,
-      investidores: investidores,
-    })
-  })
-} else {
-  res.redirect("admin/compra/index");
-}
-  })
-  .catch((err) => {
-    res.redirect("admin/compra/index");
-  });
-})
-
-///Projeção
-app.get('/projecao/:slug', (req, res) => {
-  var slug = req.params.slug;
-  Compra.findOne({
-    include: [{
-      model: Investidor,
-    }],
-    where:{
-      slug:slug,
-    },
-  }).then((compra) => {
-    if (compra != undefined) {
-      Investidor.findAll().then((investidores) => {
-    res.render("compra",{
-      compra: compra,
-      investidores: investidores,
-    })
-  })
-} else {
-  res.redirect("admin/projecao/index");
-}
-  })
-  .catch((err) => {
-    res.redirect("admin/projecao/index");
   });
 })
 
 //Venda
-app.get('/venda/:slug', (req, res) => {
-  var slug = req.params.slug;
-  Investidor.findOne({
-    where:{
-      slug:slug,
-    },
-    include: [{
-      model: Venda
-    }]
-  }).then((investidor) => {
-    if (investidor != undefined) {
-      Investidor.findAll().then((investidores) => {
-    res.render("admin/venda/filter",{
-      vendas: investidor.vendas,
-      investidores: investidores,
-    })
+app.get('/venda/:id', (req, res) => {
+    var id = req.params.id;
+        Venda.findAll({
+          include: [{
+            model: Investidor,
+          }],
+          where:{
+            investidoreId:id,
+          },
+           raw: true,
+          nest: true,
+        }).then((vendas) => {
+        Investidor.findAll().then((investidores) => {
+      res.render("admin/venda/index",{
+        investidores: investidores,
+        vendas:vendas,
+      })
   })
-} else {
-  res.redirect("admin/venda/index");
-}
   })
-  .catch((err) => {
-    res.redirect("admin/venda/index");
-  });
-})
+    .catch((err) => {
+      res.redirect("admin/venda/index");
+    });
+  })
 
 //Relatório
-app.get('/relatorio/:slug', async (req, res) => {
+app.get('/relatorio/:id', async (req, res) => {
   
-  var slug = req.params.slug;
+  var id = req.params.id;
   Investidor.findOne({
     where:{
-      slug:slug,
+      id:id,
     },
     include: [{
       model: Venda
@@ -178,9 +121,12 @@ app.get('/relatorio/:slug', async (req, res) => {
     if (investidor != undefined) {
       Investidor.findAll().then(async (investidores) => {
 
-          //////////////////////Quantidade
-    var amountQ = await Venda.findOne({
+     //////////////////////Quantidade
+     var amountQ = await Venda.findOne({
       attributes: [sequelize.fn("sum", sequelize.col("quantidade"))],
+      where:{
+        investidoreId:id,
+      },
       raw: true
     });
     var quantidade = (Number(amountQ['sum(`quantidade`)']))
@@ -188,18 +134,31 @@ app.get('/relatorio/:slug', async (req, res) => {
       //////////////////////Unitário
       var amountU = await Venda.findOne({
         attributes: [sequelize.fn("avg", sequelize.col("unitario"))],
+        where:{
+          investidoreId:id,
+        },
         raw: true
       });
       var unitarioT = (Number(amountU['avg(`unitario`)']))
       var unitario = (Number(amountU['avg(`unitario`)'])).toLocaleFixed(2);
 
       /////Valor da Venda
-      var amountVT = (Number(quantidade) * Number(unitarioT))
-      var amountV = (Number(quantidade) * Number(unitarioT)).toLocaleFixed(2);
+    var amountVv = await Venda.findOne({
+      attributes: [sequelize.fn("sum", sequelize.col("total"))],
+      where:{
+        investidoreId:id,
+      },
+      raw: true
+    });
+    var amountVT = (Number(amountVv['sum(`total`)']))
+    var amountV = (Number(amountVv['sum(`total`)'])).toLocaleFixed(2);
       
           //////////////////////Capital Investidor
     var amountT = await Compra.findOne({
       attributes: [sequelize.fn("sum", sequelize.col("total"))],
+       where:{
+      investidoreId:id,
+    },
       raw: true
     });
     var CapitalInvestidoT = (Number(amountT['sum(`total`)']))
@@ -224,7 +183,7 @@ app.get('/relatorio/:slug', async (req, res) => {
       compra: investidor.compras,
       investidores: investidores,
       quantidade, unitario, amountV, CapitalInvestido, InvVenda, Lucro,
-      LucroF, percentualF,
+        LucroF, percentualF,
     })
   })
 } else {
@@ -286,6 +245,33 @@ app.get('/estoque/:slug', async (req, res) => {
   })
   .catch((err) => {
     res.redirect("admin/estoque/index");
+  });
+})
+
+//Morte
+app.get('/morte/:slug', (req, res) => {
+  var slug = req.params.slug;
+  Investidor.findOne({
+    where:{
+      slug:slug,
+    },
+    include: [{
+      model: Morte
+    }]
+  }).then((investidor) => {
+    if (investidor != undefined) {
+      Investidor.findAll().then((investidores) => {
+    res.render("admin/estoque/filter",{
+      mortes: investidor.mortes,
+      investidores: investidores,
+    })
+  })
+} else {
+  res.redirect("admin/estoque/morte");
+}
+  })
+  .catch((err) => {
+    res.redirect("admin/estoque/morte");
   });
 })
 

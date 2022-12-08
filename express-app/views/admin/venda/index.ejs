@@ -28,7 +28,7 @@ Investidor
   </li>
  <% investidores.forEach(investidor => { %>
 <li >
-        <a class="dropdown-item"  href="/venda/<%= investidor.slug %>"><%= investidor.name %></a>
+        <a class="dropdown-item"  href="/venda/<%= investidor.id %>"><%= investidor.name %></a>
     </li>
  <% }) %>
 </ul>
@@ -69,7 +69,7 @@ Investidor
       </thead>
       <tbody id="demo">
         <% vendas.forEach(venda => { %>
-          <tr class="pesquisar" href="/<%= venda.slug %>">
+          <tr class="pesquisar" href="/<%= venda.id %>">
           <td><%= venda.investidore.name %></td>
           <td id="formatData"><%= venda.data %></td>
           <td><%= venda.quantidade %></td>
