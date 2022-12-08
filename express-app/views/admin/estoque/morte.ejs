@@ -37,7 +37,7 @@ Investidor
   </li>
  <% investidores.forEach(investidor => { %>
 <li >
-        <a class="dropdown-item"  href="/morte/<%= investidor.slug %>"><%= investidor.name %></a>
+        <a class="dropdown-item"  href="/morte/<%= investidor.id %>"><%= investidor.name %></a>
     </li>
  <% }) %>
 </ul>
@@ -76,7 +76,7 @@ Investidor
     </thead>
     <tbody id="demo">
         <% mortes.forEach(morte => { %>
-            <tr class="pesquisar" href="/<%= morte.slug %>">
+            <tr class="pesquisar" href="/<%= morte.id %>">
         <td><%= morte.investidore.name %></td>
         <td><%= morte.data %></td>
         <td><%= morte.quantidade %></td>

@@ -196,49 +196,41 @@ app.get('/relatorio/:id', async (req, res) => {
 })
 
 //Estoque
-app.get('/estoque/:slug', async (req, res) => {
-  var slug = req.params.slug;
-  Investidor.findOne({
-    where:{
-      slug:slug,
-    },
-    include: [{
-      model: Venda
-    },
-    {
-      model: Compra,
-    }]
-  }).then( async (investidor) => {
+app.get('/estoque/:id', async (req, res) => {
+  var id = req.params.id;
+
     await  Morte.findOne({
       attributes: [sequelize.fn("sum", sequelize.col("quantidade"))],
+      where:{
+        investidoreId:id,
+      },
       raw: true
     }).then( async (amountQ) => {
     let morte = (Number(amountQ['sum(`quantidade`)']))
     await Compra.findOne({
       attributes: [sequelize.fn("sum", sequelize.col("quantidade"))],
+      where:{
+        investidoreId:id,
+      },
       raw: true
     }).then( async (amountQc) => {
     let comprados = (Number(amountQc['sum(`quantidade`)']))
     await Venda.findOne({
       attributes: [sequelize.fn("sum", sequelize.col("quantidade"))],
+      where:{
+        investidoreId:id,
+      },
       raw: true
     }).then((amountQv) => {
     let vendidos = (Number(amountQv['sum(`quantidade`)']))
 
     var estoque = ((comprados) - (morte) - (vendidos));
 
-    if (investidor != undefined) {
       Investidor.findAll().then((investidores) => {
     res.render("admin/estoque/index",{
-      vendas: investidor.vendas,
-      compras: investidor.compras,
       investidores: investidores,
       morte,comprados,vendidos,estoque,
     })
-  })
-} else {
-  res.redirect("admin/estoque/index");
-}
   })
 })
     })
@@ -249,27 +241,35 @@ app.get('/estoque/:slug', async (req, res) => {
 })
 
 //Morte
-app.get('/morte/:slug', (req, res) => {
-  var slug = req.params.slug;
-  Investidor.findOne({
+app.get('/morte/:id', async (req, res) => {
+  var id = req.params.id;
+
+  //////////////////////mortes
+  var amountQ = await Morte.findOne({
+    attributes: [sequelize.fn("sum", sequelize.col("quantidade"))],
     where:{
-      slug:slug,
+      investidoreId:id,
     },
+    raw: true
+  });
+  var qmorte = (Number(amountQ['sum(`quantidade`)']))
+
+  Morte.findAll({
     include: [{
-      model: Morte
-    }]
-  }).then((investidor) => {
-    if (investidor != undefined) {
+        model: Investidor,
+      }],
+      where:{
+        investidoreId:id,
+      },
+  }).then((mortes) => {
       Investidor.findAll().then((investidores) => {
-    res.render("admin/estoque/filter",{
-      mortes: investidor.mortes,
+    res.render("admin/estoque/morte",{
+      mortes: mortes,
       investidores: investidores,
+      qmorte,
     })
   })
-} else {
-  res.redirect("admin/estoque/morte");
-}
-  })
+})
   .catch((err) => {
     res.redirect("admin/estoque/morte");
   });
