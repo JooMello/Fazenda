@@ -16,6 +16,7 @@
     >
     </div>
     </div>
+  
 
 
     <div class="col-2">
@@ -52,8 +53,9 @@
       </thead>
       <tbody id="demo">
         <% investidores.forEach(investidor => { %>
-        <tr  class="pesquisar"  href="/<%= investidor.slug %>">
-          <td><%= investidor.name %></td>
+        <tr  class="pesquisar"  href="/<%= investidor.id %>">
+          <td ><a class="dropdown-item" href="/investidor/<%= investidor.id %>"><%= investidor.name %></a></td>
+          <td><%= investidor.phone %></td>
           <td><%= investidor.phone %></td>
           <td><%= investidor.email %></td>
           <td><%= investidor.cpf %></td>

@@ -9,13 +9,32 @@
       <hr />
       <div class="row row-cols-1 row-cols-md-2 g-4">
 
+        <div class="col-4">
+          <div class="card text-center">
+             <div class="dropdown">
+      <button class="btn dropdown-toggle form-control" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Investidor
+      </button>
+      <ul class="dropdown-menu">
+        <li >
+          <a class="dropdown-item"  href="/admin/relatorios">TODOS</a>
+        </li>
+        <% investidores.forEach(investidor => { %>
+      <li >
+        <a class="dropdown-item"  href="/relatorio/<%= investidor.id %>"><%= investidor.name %></a>
+      </li>
+       <% }) %>
+      </ul>
+      </div>
       
+          </div>
+         </div>
 
    <div class="col-4">
     <div class="card text-center">
        <div class="dropdown">
 <button class="btn dropdown-toggle form-control" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-Investidor
+Data
 </button>
 <ul class="dropdown-menu">
   <li >
@@ -23,7 +42,10 @@ Investidor
   </li>
  <% investidores.forEach(investidor => { %>
 <li >
-        <a class="dropdown-item"  href="/relatorio/<%= investidor.id %>"><%= investidor.name %></a>
+        <a class="dropdown-item data"
+        type="date"
+        name="data"
+          href="/relatorio/<%= investidor.id %>"></a>
     </li>
  <% }) %>
 </ul>
@@ -31,6 +53,8 @@ Investidor
 
     </div>
    </div>
+
+
     </div>
 <hr/>
 
@@ -69,15 +93,23 @@ Investidor
     <table id="tab" data-type="table-menu" class="table table-bordered">
         <thead>
           <tr>
-            <th rowspan="2" class="center">Fazenda</th>
+            <th>Nome</th>
             <th>Lucro/Inv</th>
             <th>Percentual %</th>
           </tr>
+        </thead>
+          <tbody id="demo">
           <tr class="pesquisar" >
+            <td>Fazenda</td>
             <td><%= LucroF %></td>
             <td><%= percentualF %>%</td>
           </tr>
-        </thead>
+          <tr class="pesquisar" >
+            <td>Investidor</td>
+            <td><%= LucroF %></td>
+            <td><%= percentualF %>%</td>
+          </tr>
+        </tbody>
       </table>
     </div>
     <hr/>

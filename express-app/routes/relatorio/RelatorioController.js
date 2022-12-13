@@ -27,9 +27,7 @@ router.get('/admin/relatorios', async (req, res, next) => {
        //////////////////////Quantidade
     var amountQ = await Venda.findOne({
       attributes: [sequelize.fn("sum", sequelize.col("quantidade"))],
-        where: {
-          investidoreId: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-        },
+      
       raw: true
     });
     var quantidade = (Number(amountQ['sum(`quantidade`)']))
@@ -37,9 +35,7 @@ router.get('/admin/relatorios', async (req, res, next) => {
       //////////////////////Unitário
       var amountU = await Venda.findOne({
         attributes: [sequelize.fn("avg", sequelize.col("unitario"))],
-        where: {
-          investidoreId: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-        },
+      
         raw: true
       });
       var unitarioT = (Number(amountU['avg(`unitario`)']))
@@ -48,9 +44,7 @@ router.get('/admin/relatorios', async (req, res, next) => {
       /////Valor da Venda
     var amountVv = await Venda.findOne({
       attributes: [sequelize.fn("sum", sequelize.col("total"))],
-      where: {
-        investidoreId: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-      },
+     
       raw: true
     });
     var amountVT = (Number(amountVv['sum(`total`)']))
@@ -59,9 +53,7 @@ router.get('/admin/relatorios', async (req, res, next) => {
           //////////////////////Capital Investidor
     var amountT = await Compra.findOne({
       attributes: [sequelize.fn("sum", sequelize.col("total"))],
-      where: {
-        investidoreId: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-      },
+     
       raw: true
     });
     var CapitalInvestidoT = (Number(amountT['sum(`total`)']))

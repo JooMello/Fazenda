@@ -24,6 +24,7 @@ const Investidor = require('./routes/investidor/Investidor');
 const Compra = require('./routes/compra/Compra');
 const Venda = require('./routes/venda/Venda');
 const Morte = require('./routes/estoque/Estoque');
+const Saque = require('./routes/investidor/Saque');
 
 
 //view engine setup
@@ -52,6 +53,7 @@ connection
   .catch((error) => {
     console.log(error);
   });
+
 
   //Compra
 app.get('/compra/:id', (req, res) => {
@@ -104,7 +106,7 @@ app.get('/venda/:id', (req, res) => {
     });
   })
 
-//Relatório
+//Relatório id
 app.get('/relatorio/:id', async (req, res) => {
   
   var id = req.params.id;
@@ -158,6 +160,98 @@ app.get('/relatorio/:id', async (req, res) => {
       attributes: [sequelize.fn("sum", sequelize.col("total"))],
        where:{
       investidoreId:id,
+    },
+      raw: true
+    });
+    var CapitalInvestidoT = (Number(amountT['sum(`total`)']))
+    var CapitalInvestido = (Number(amountT['sum(`total`)'])).toLocaleFixed(2);
+
+    ///Investimento sobre a Venda
+    var InvVenda = ((Number(CapitalInvestidoT) / Number(amountVT)) * (100)).toLocaleFixed(2);
+  
+    ///Lucro sobre Investimento
+    var LucroN = (Number(amountVT) - Number(CapitalInvestidoT));
+    var Lucro = (Number(amountVT) - Number(CapitalInvestidoT)).toLocaleFixed(2);
+
+    ///Lucro sobre investimento Fazenda
+    var LucroFN = (Number(LucroN) / 2)
+    var LucroF = (Number(LucroN) / 2).toLocaleFixed(2);
+
+    //Percentual Fazenda 
+    var percentualF = ((Number(LucroFN) / Number(LucroN)) * (100)).toLocaleFixed(2);
+
+    res.render("admin/relatorios/index",{
+      vendas: investidor.vendas,
+      compra: investidor.compras,
+      investidores: investidores,
+      quantidade, unitario, amountV, CapitalInvestido, InvVenda, Lucro,
+        LucroF, percentualF,
+    })
+  })
+} else {
+  res.redirect("admin/relatorios/index");
+}
+  })
+  .catch((err) => {
+    res.redirect("admin/relatorios/index");
+  });
+})
+
+//Relatório data
+app.get('/relatorio/:data', async (req, res) => {
+  
+  var id = req.params.id;
+  var data = req.params.data;
+  Investidor.findOne({
+    where:{
+      id:id,
+    },
+    include: [{
+      model: Venda
+    },{
+      model: Compra
+    }],
+  }).then((investidor) => {
+    if (investidor != undefined) {
+      Investidor.findAll().then(async (investidores) => {
+
+     //////////////////////Quantidade
+     var amountQ = await Venda.findOne({
+      attributes: [sequelize.fn("sum", sequelize.col("quantidade"))],
+      where:{
+        data: data,
+      },
+      raw: true
+    });
+    var quantidade = (Number(amountQ['sum(`quantidade`)']))
+
+      //////////////////////Unitário
+      var amountU = await Venda.findOne({
+        attributes: [sequelize.fn("avg", sequelize.col("unitario"))],
+        where:{
+          data: data,
+        },
+        raw: true
+      });
+      var unitarioT = (Number(amountU['avg(`unitario`)']))
+      var unitario = (Number(amountU['avg(`unitario`)'])).toLocaleFixed(2);
+
+      /////Valor da Venda
+    var amountVv = await Venda.findOne({
+      attributes: [sequelize.fn("sum", sequelize.col("total"))],
+      where:{
+        data: data,
+      },
+      raw: true
+    });
+    var amountVT = (Number(amountVv['sum(`total`)']))
+    var amountV = (Number(amountVv['sum(`total`)'])).toLocaleFixed(2);
+      
+          //////////////////////Capital Investidor
+    var amountT = await Compra.findOne({
+      attributes: [sequelize.fn("sum", sequelize.col("total"))],
+       where:{
+        data: data,
     },
       raw: true
     });

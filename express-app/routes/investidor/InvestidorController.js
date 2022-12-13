@@ -8,8 +8,19 @@ const {
 } = require("sequelize");
 
 const Compra = require("../compra/Compra");
+const Venda = require("../venda/Venda");
+const Saque = require('./Saque');
 
 var app = express();
+
+//filtragem de dados, por peridodo que eles foram adicionados no BD
+  //formatar numeros em valores decimais (.toLocaleFixed(2))
+  Number.prototype.toLocaleFixed = function (n) {
+    return this.toLocaleString(undefined, {
+      minimumFractionDigits: n,
+      maximumFractionDigits: n
+    });
+  };
 
 router.get('/admin/investidor', (req, res, next) => {
 
@@ -141,6 +152,111 @@ router.post('/investidor/delete', (req, res) => {
   }
 });
 
+//Investidores 
+router.get('/investidor/:id', (req, res) => {
+    var id = req.params.id;
+    
+        Investidor.findAll({
+            where:{
+          id: id,
+        },
+         include: [{
+          model: Venda
+        },{
+          model: Compra
+        },{
+          model: Saque
+        },],
+        raw: true,
+        nest: true,
+        }).then((investidores) => {
+          Investidor.findByPk(id)
+.then( async (investidor) => {
+
+            /////Valor da Venda
+  var amountVv = await Venda.findOne({
+      attributes: [sequelize.fn("sum", sequelize.col("total"))],
+      where: {
+        investidoreId: id,
+      },
+      raw: true
+    });
+  var amountVT = (Number(amountVv['sum(`total`)']))
+
+            //////////////////////Capital Investidor
+  var amountT = await Compra.findOne({
+              attributes: [sequelize.fn("sum", sequelize.col("total"))],
+              where: {
+                investidoreId: id,
+              },
+              raw: true
+            });
+  var CapitalInvestidoT = (Number(amountT['sum(`total`)']))
+  var CapitalInvestido = (Number(amountT['sum(`total`)'])).toLocaleFixed(2);
+
+             ///Lucro sobre Investimento
+  var LucroN = (Number(amountVT) - Number(CapitalInvestidoT));
+  var Lucro = (Number(amountVT) - Number(CapitalInvestidoT)).toLocaleFixed(2);
+
+      //////////////////////Capital Retirado
+  var amountR = await Saque.findOne({
+        attributes: [sequelize.fn("sum", sequelize.col("valor"))],
+        where: {
+          investidoreId: id,
+        },
+        raw: true
+      });
+  var CapitalRetiradoT = (Number(amountR['sum(`valor`)']))
+  var CapitalRetirado = (Number(amountR['sum(`valor`)'])).toLocaleFixed(2);
+
+      /////total
+  var total = (Number(CapitalInvestidoT) + Number(LucroN) - Number(CapitalRetiradoT)).toLocaleFixed(2);
+
+
+      res.render("admin/investidor/investidor",{
+        investidores: investidores,
+        investidor: investidor,
+        CapitalInvestido, Lucro, CapitalRetirado, total,
+      })
+  })
+})
+});
+
+router.get('/admin/investidor/newR/:id', (req, res, next) => {
+
+  var id = req.params.id;
+
+  Investidor.findAll().then((investidores) => {
+
+    Investidor.findByPk(id)
+    .then((investidor) => {
+    res.render('admin/investidor/newR', {
+      investidores: investidores,
+      investidor: investidor,
+    });
+  })
+  })
+})
+
+router.post('/saque/save',  (req, res) => {
+  var id = req.params.id;
+  var data = req.body.data;
+  var valor = req.body.valor;
+  var investidor = req.body.investidor;
+
+  Saque.create(
+   {
+    data: data,
+    valor: valor,
+    investidoreId: investidor,
+  })
+  .then(() => {
+    res.redirect("/");
+  });
+});
+
 
 
 module.exports = router;
+
+
