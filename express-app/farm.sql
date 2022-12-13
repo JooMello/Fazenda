@@ -1,5 +1,5 @@
 -- MySQL Workbench Synchronization
--- Generated: 2022-12-05 08:58
+-- Generated: 2022-12-13 14:33
 -- Model: New Model
 -- Version: 1.0
 -- Project: Name of the project
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `farm`.`compras` (
     ON DELETE SET NULL
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 8
+AUTO_INCREMENT = 20
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -51,7 +51,45 @@ CREATE TABLE IF NOT EXISTS `farm`.`investidores` (
   `updatedAt` DATETIME NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 7
+AUTO_INCREMENT = 11
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS `farm`.`mortes` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `data` DATE NOT NULL,
+  `quantidade` VARCHAR(255) NOT NULL,
+  `createdAt` DATETIME NOT NULL,
+  `updatedAt` DATETIME NOT NULL,
+  `investidoreId` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `investidoreId` (`investidoreId` ASC) VISIBLE,
+  CONSTRAINT `mortes_ibfk_1`
+    FOREIGN KEY (`investidoreId`)
+    REFERENCES `farm`.`investidores` (`id`)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 13
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS `farm`.`saques` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `data` VARCHAR(255) NOT NULL,
+  `valor` VARCHAR(255) NOT NULL,
+  `createdAt` DATETIME NOT NULL,
+  `updatedAt` DATETIME NOT NULL,
+  `investidoreId` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `investidoreId` (`investidoreId` ASC) VISIBLE,
+  CONSTRAINT `saques_ibfk_1`
+    FOREIGN KEY (`investidoreId`)
+    REFERENCES `farm`.`investidores` (`id`)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 25
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -74,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `farm`.`vendas` (
     ON DELETE SET NULL
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
+AUTO_INCREMENT = 16
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
