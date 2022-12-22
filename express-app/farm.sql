@@ -1,5 +1,5 @@
 -- MySQL Workbench Synchronization
--- Generated: 2022-12-13 14:33
+-- Generated: 2022-12-22 17:12
 -- Model: New Model
 -- Version: 1.0
 -- Project: Name of the project
@@ -15,10 +15,10 @@ CREATE TABLE IF NOT EXISTS `farm`.`compras` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `data` DATE NOT NULL,
   `quantidade` VARCHAR(255) NOT NULL,
-  `unitario` DECIMAL(10,2) NOT NULL,
-  `total` DECIMAL(10,2) NOT NULL,
-  `dolar` DECIMAL(10,2) NOT NULL,
-  `amount` DECIMAL(10,2) NOT NULL,
+  `unitario` VARCHAR(255) NOT NULL,
+  `total` VARCHAR(255) NOT NULL,
+  `dolar` VARCHAR(255) NOT NULL,
+  `amount` VARCHAR(255) NOT NULL,
   `createdAt` DATETIME NOT NULL,
   `updatedAt` DATETIME NOT NULL,
   `investidoreId` INT(11) NULL DEFAULT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `farm`.`compras` (
     ON DELETE SET NULL
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 20
+AUTO_INCREMENT = 43
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `farm`.`investidores` (
   `updatedAt` DATETIME NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 11
+AUTO_INCREMENT = 15
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `farm`.`mortes` (
     ON DELETE SET NULL
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 13
+AUTO_INCREMENT = 18
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `farm`.`saques` (
     ON DELETE SET NULL
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 25
+AUTO_INCREMENT = 26
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -97,10 +97,10 @@ CREATE TABLE IF NOT EXISTS `farm`.`vendas` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `data` DATE NOT NULL,
   `quantidade` VARCHAR(255) NOT NULL,
-  `unitario` DECIMAL(10,2) NOT NULL,
-  `total` DECIMAL(10,2) NOT NULL,
-  `dolar` DECIMAL(10,2) NOT NULL,
-  `amount` DECIMAL(10,2) NOT NULL,
+  `unitario` VARCHAR(255) NOT NULL,
+  `total` VARCHAR(255) NOT NULL,
+  `dolar` VARCHAR(255) NOT NULL,
+  `amount` VARCHAR(255) NOT NULL,
   `createdAt` DATETIME NOT NULL,
   `updatedAt` DATETIME NOT NULL,
   `investidoreId` INT(11) NULL DEFAULT NULL,
@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `farm`.`vendas` (
     ON DELETE SET NULL
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 16
+AUTO_INCREMENT = 21
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 

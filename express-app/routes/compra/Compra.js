@@ -13,19 +13,19 @@ const Compra = connection.define('compras', {
         allowNull: false
     },
     unitario: {
-        type: Sequelize.DECIMAL(10, 2),
+        type: Sequelize.STRING,
         allowNull: false
     },
     total: {
-        type: Sequelize.DECIMAL(10, 2),
+        type: Sequelize.STRING,
         allowNull: false
     },
     dolar: {
-        type: Sequelize.DECIMAL(10, 2),
+        type: Sequelize.STRING,
         allowNull: false
     },
     amount: {
-        type: Sequelize.DECIMAL(10, 2),
+        type: Sequelize.STRING,
         allowNull: false
     },
 });

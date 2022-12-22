@@ -1,7 +1,7 @@
 const { app, globalShortcut, BrowserWindow } = require('electron');
 const main = require('@electron/remote/main');
 
-let mainWindow;
+let mainWindow; 
 
 function registerGlobalShortcuts() {
     globalShortcut.register("CommandOrControl+Shift+L", () => {

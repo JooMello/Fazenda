@@ -163,8 +163,8 @@ app.get('/relatorio/:id', async (req, res) => {
     },
       raw: true
     });
-    var CapitalInvestidoT = (Number(amountT['sum(`total`)']))
-    var CapitalInvestido = (Number(amountT['sum(`total`)'])).toLocaleFixed(2);
+    var CapitalInvestidoT = (Number(amountT['sum(`total`)']) * Number(1000) )
+    var CapitalInvestido = (Number(amountT['sum(`total`)']) * Number(1000)).toLocaleFixed(2);
 
     ///Investimento sobre a Venda
     var InvVenda = ((Number(CapitalInvestidoT) / Number(amountVT)) * (100)).toLocaleFixed(2);

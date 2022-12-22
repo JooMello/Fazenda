@@ -4,8 +4,34 @@ const Compra = require("./Compra");
 const slugify = require("slugify");
 const sequelize = require("sequelize");
 const { Op } = require("sequelize");
+const request = require('request')
 
 const Investidor = require("../investidor/Investidor")
+
+
+
+
+// https://docs.awesomeapi.com.br/
+
+const moedas =  'USD-BRL'
+
+// request{options, callback}
+
+
+const options = {
+    url: `https://economia.awesomeapi.com.br/last/${moedas}`,
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json',
+        'Accept-Charset': 'utf-8'
+    },
+}
+
+const callback_dolar = function(erro, res, body){
+    let json = JSON.parse(body)
+    cotacao = json.USDBRL['bid']
+}
+const Dolar = request(options, callback_dolar)
 
 
 router.get('/admin/compra', async (req, res, next) => {
@@ -29,9 +55,23 @@ router.get('/admin/compra', async (req, res, next) => {
 });
 
 router.get('/admin/compra/new', (req, res) => {
+
+    //filtragem de dados, por peridodo que eles foram adicionados no BD
+  //formatar numeros em valores decimais (.toLocaleFixed(2))
+  Number.prototype.toLocaleFixed = function (n) {
+    return this.toLocaleString(undefined, {
+      minimumFractionDigits: n,
+      maximumFractionDigits: n
+    });
+  };
+
+  var cotacaoDolar = (Number(cotacao)).toLocaleFixed(2);
+
   Investidor.findAll().then((investidores) => {
     res.render('admin/compra/new', {
       investidores: investidores,
+      cotacao: cotacao,
+      cotacaoDolar: cotacaoDolar
     });
   });
 });
