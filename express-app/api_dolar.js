@@ -21,8 +21,4 @@ const callback_dolar = function(erro, res, body){
     cotacao = json.USDBRL['bid']
    // console.log('DOLAR = R$' + cotacao )
 }
-const dolar = request(options, callback_dolar)
-
-
-
-module.exports = dolar;
+const Dolar = request(options, callback_dolar)

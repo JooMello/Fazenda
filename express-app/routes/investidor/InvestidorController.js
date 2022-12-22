@@ -191,8 +191,8 @@ router.get('/investidor/:id', (req, res) => {
               },
               raw: true
             });
-  var CapitalInvestidoT = (Number(amountT['sum(`total`)']))
-  var CapitalInvestido = (Number(amountT['sum(`total`)'])).toLocaleFixed(2);
+  var CapitalInvestidoT = (Number(amountT['sum(`total`)']) * Number(1000))
+  var CapitalInvestido = (Number(amountT['sum(`total`)']) * Number(1000)).toLocaleFixed(2);
 
              ///Lucro sobre Investimento
   var LucroN = (Number(amountVT) - Number(CapitalInvestidoT));
